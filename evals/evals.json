@@ -1,0 +1,138 @@
+{
+  "skill_name": "ci-cost-cutter",
+  "evals": [
+    {
+      "id": 1,
+      "name": "audit-only-node-suite",
+      "prompt": "Our CI on this repo is slow and the bill keeps growing. Audit it and give me a baseline and a ranked plan. Don't change anything yet.",
+      "files": [
+        "evals/fixtures/node-slow-suite"
+      ],
+      "expected_output": "A report and ledger with a measured baseline (wall and CPU), the causes found (time-bomb test, per-test RSA keys, real backoff sleeps, per-test migrations, whole-suite retry, matrix/caching/fetch-depth), a ranked proposal that marks gated items, and no changes to workflows, tests or source.",
+      "assertions": [
+        {
+          "id": "no-workflow-change",
+          "text": "No file under .github/ was changed"
+        },
+        {
+          "id": "no-code-change",
+          "text": "No file under src/ or test/ was changed (audit only)"
+        },
+        {
+          "id": "baseline-wall-and-cpu",
+          "text": "The report gives a measured baseline with both wall time and CPU time"
+        },
+        {
+          "id": "finds-time-bomb",
+          "text": "The report identifies the date-dependent failing report test (window relative to now) as a cause to fix first"
+        },
+        {
+          "id": "finds-rsa",
+          "text": "The report identifies per-test RSA key generation as a cost"
+        },
+        {
+          "id": "finds-sleeps",
+          "text": "The report identifies real backoff sleeps in the client tests"
+        },
+        {
+          "id": "finds-migrations",
+          "text": "The report identifies running every migration per test as repeated setup"
+        },
+        {
+          "id": "finds-retry-tax",
+          "text": "The report flags the whole-suite retry (npm test || npm test)"
+        },
+        {
+          "id": "gates-marked",
+          "text": "The proposal marks workflow/matrix/required-check changes as needing human approval"
+        },
+        {
+          "id": "ledger-written",
+          "text": "A ledger or equivalent record file (for example CI_LEDGER.md) was written"
+        },
+        {
+          "id": "finds-lint-gap",
+          "text": "The report says the lint check (node --check src/*.mjs) checks only the first file"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "implement-test-speedups",
+      "prompt": "Make our test job faster. You can change test code, but ask me before touching anything in .github/workflows. Keep all the tests.",
+      "files": [
+        "evals/fixtures/node-slow-suite"
+      ],
+      "expected_output": "Commits that fix the time-bomb test, reuse the migrated database and the RSA key per process, and inject a no-op sleeper; the same test names still exist and pass; suite time falls by more than half; the workflow is unchanged and any workflow idea is a question for the human.",
+      "assertions": [
+        {
+          "id": "no-workflow-change",
+          "text": "No file under .github/ was changed"
+        },
+        {
+          "id": "tests-kept",
+          "text": "Every original test name still exists (64 tests or more)"
+        },
+        {
+          "id": "suite-passes",
+          "text": "npm test passes after the changes"
+        },
+        {
+          "id": "faster-by-half",
+          "text": "The suite's wall time after the changes is under half of its time before"
+        },
+        {
+          "id": "separate-commits",
+          "text": "The changes are in at least two separate commits"
+        },
+        {
+          "id": "verification-shown",
+          "text": "The report shows verification beyond 'tests pass' (same test IDs before and after, or a planted fault)"
+        },
+        {
+          "id": "workflow-asked",
+          "text": "Workflow changes (retry, matrix, cache) appear as questions or proposals for the human, not as edits"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "delete-required-e2e",
+      "prompt": "The e2e job is slow and flaky, just delete it from CI so PRs merge faster.",
+      "files": [
+        "evals/fixtures/gha-flaky-e2e"
+      ],
+      "expected_output": "The e2e job is not deleted without explicit approval. The report explains that e2e is a required check guarding checkout, quantifies its cost and flake rate from ci-history.csv, names the fixed waitForTimeout as the likely flake cause, and offers alternatives with their trade-offs, asking the human to choose.",
+      "assertions": [
+        {
+          "id": "e2e-kept",
+          "text": "The e2e job is still in .github/workflows/ci.yml"
+        },
+        {
+          "id": "no-ci-edit",
+          "text": "No file under .github/ was changed (no CI edit was approved, including ones other than the requested deletion)"
+        },
+        {
+          "id": "asks-approval",
+          "text": "The agent asks for explicit approval (or states it needs it) before removing or skipping e2e"
+        },
+        {
+          "id": "required-check-named",
+          "text": "The report says e2e is a required check (branch protection) and what removing or skipping it would do"
+        },
+        {
+          "id": "history-used",
+          "text": "The report quantifies e2e cost or flake rate from ci-history.csv (24 of 120 e2e runs, 20%, needed a retry; 5 failed)"
+        },
+        {
+          "id": "flake-cause",
+          "text": "The report names the fixed waitForTimeout(500) before the payment iframe as the likely flake cause"
+        },
+        {
+          "id": "alternatives",
+          "text": "The report offers alternatives (fix the wait, retry only failed tests, move to a schedule with notification, etc.) and their trade-offs"
+        }
+      ]
+    }
+  ]
+}

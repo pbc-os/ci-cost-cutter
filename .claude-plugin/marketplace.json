@@ -1,0 +1,12 @@
+{
+  "name": "ci-cost-cutter",
+  "owner": {"name": "pbc-os"},
+  "plugins": [
+    {
+      "name": "ci-cost-cutter",
+      "source": "./",
+      "description": "Agent-driven CI audit: measure, find where CI time and money go, cut it in verified steps without weakening checks.",
+      "version": "0.1.0"
+    }
+  ]
+}

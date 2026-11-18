@@ -1,0 +1,10 @@
+{
+  "name": "ci-cost-cutter",
+  "version": "0.1.0",
+  "description": "Agent-driven CI audit: measure a baseline (wall time and compute), find where the time and money go, and cut it in small verified steps without weakening any check. Based on the OpenClaw CI cost article.",
+  "author": {"name": "pbc-os"},
+  "homepage": "https://github.com/pbc-os/ci-cost-cutter",
+  "repository": "https://github.com/pbc-os/ci-cost-cutter",
+  "license": "MIT",
+  "keywords": ["ci", "github-actions", "testing", "cost", "performance", "agents"]
+}

@@ -1,0 +1,1 @@
+{"name":"gha-flaky-e2e","private":true,"scripts":{"test":"node --test src/"},"devDependencies":{"@playwright/test":"1.49.0"}}
