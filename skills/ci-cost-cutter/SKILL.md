@@ -35,7 +35,7 @@ Stop and ask before any of these. Explain what you want to change, why, the meas
 | Trigger many CI runs | more than a few runs to measure, or any run on paid runners the human did not expect |
 | Push to the default branch, merge, deploy, or touch secrets/permissions | always |
 
-Changes that need no gate: reading anything, measuring locally, profiling, writing the ledger and proposals, and editing test code in a branch when the change keeps every test and its meaning (for example, reusing a fixture that is rebuilt identically each time) — still one commit per lever, still verified.
+Changes that need no gate: reading anything, measuring locally, profiling, writing the ledger and proposals, and editing test code in a branch when the change keeps every test and its meaning (for example, reusing a fixture that is rebuilt identically each time, or pinning the clock of a test that broke on a date so it checks what it always meant to) — still one commit per lever, still verified.
 
 ## When to ask for clarification
 
